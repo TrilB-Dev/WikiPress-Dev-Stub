@@ -1,0 +1,8 @@
+{
+	"name": "trilb-dev/wikipress-dev-stub",
+	"description": "Development stubs for WikiPress integrations and extensions.",
+	"type": "library",
+	"license": "GPL-2.0-or-later",
+	"minimum-stability": "stable",
+	"prefer-stable": true
+}
