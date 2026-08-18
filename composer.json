@@ -1,8 +1,26 @@
 {
-	"name": "trilb-dev/wikipress-dev-stub",
-	"description": "Development stubs for WikiPress integrations and extensions.",
-	"type": "library",
-	"license": "GPL-2.0-or-later",
-	"minimum-stability": "stable",
-	"prefer-stable": true
+    "name": "trilbdev/wikipress-dev-stub",
+    "type": "library",
+    "description": "Development stubs for WikiPress integrations and extensions.",
+    "keywords": ["dev-stub", "wikipress", "wordpress"],
+    "homepage": "https://github.com/TrilB-Dev/WikiPress-Dev-Stub",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anthony Bluthner",
+            "email": "mrtrilb@trilb.dev",
+            "homepage": "http://trilb.dev",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0.0",
+        "arts/elementor-stubs": "^4.2",
+        "php-stubs/wordpress-stubs": "^6.9"
+    },
+    "autoload": {
+        "files": [
+            "wikipress-stubs.php"
+        ]
+    }
 }
