@@ -8,7 +8,7 @@
  * @package WikiPressDevStub
  */
 
-namespace TrilBDev\WikiPress\Includes\Plugins {
+namespace WikiPress\Includes\Plugins {
 
 if ( ! interface_exists( PluginInterface::class ) ) {
 	interface PluginInterface {
@@ -66,6 +66,20 @@ if ( ! interface_exists( AdminPageProviderInterface::class ) ) {
 	}
 }
 
+if ( ! interface_exists( AdminMenuProviderInterface::class ) ) {
+	interface AdminMenuProviderInterface extends PluginInterface {
+		/** @return array<int, array<string, mixed>> */
+		public function get_admin_menu(): array;
+	}
+}
+
+if ( ! interface_exists( AdminSidebarProviderInterface::class ) ) {
+	interface AdminSidebarProviderInterface extends PluginInterface {
+		/** @return array<int, array<string, mixed>> */
+		public function get_admin_sidebar(): array;
+	}
+}
+
 if ( ! interface_exists( RestRouteProviderInterface::class ) ) {
 	interface RestRouteProviderInterface {
 		public function register_rest_routes(): void;
@@ -86,7 +100,36 @@ if ( ! interface_exists( I18nProviderInterface::class ) ) {
 
 }
 
-namespace TrilBDev\WikiPress\Includes\Core\WP {
+namespace WikiPress\Includes\Core {
+
+if ( ! class_exists( Capabilities::class ) ) {
+	class Capabilities {
+		/**
+		 * Return the core and registered extension capability definitions.
+		 *
+		 * @return array<string, array{group: string, label: string, description: string}>
+		 */
+		public static function definitions(): array {
+			return [];
+		}
+
+		/**
+		 * Register capability definitions contributed by a plugin.
+		 *
+		 * @param array<string, array{group: string, label: string, description: string}> $definitions
+		 */
+		public static function extend( array $definitions ): void {}
+
+		/**
+		 * Install missing registered capabilities.
+		 */
+		public static function install(): void {}
+	}
+}
+
+}
+
+namespace WikiPress\Includes\Core\WP {
 
 if ( ! class_exists( SanitizationHelper::class ) ) {
 	final class SanitizationHelper {
@@ -207,10 +250,31 @@ if ( ! class_exists( WPLoader::class ) ) {
 
 }
 
-namespace TrilBDev\WikiPress\Includes\Functions\Helpers {
+namespace WikiPress\Includes\Functions\Helpers {
+
+if ( ! class_exists( WASMHelper::class ) ) {
+	final class WASMHelper {
+		public const FILTER = 'wikipress_admin_sidebar_menus';
+		/** @return array<string, mixed> */
+		public static function define( string $name, string $slug, string $icon, string $parent = '' ): array { return [ 'parent' => $parent, 'name' => $name, 'slug' => $slug, 'icon' => $icon ]; }
+		/** @param array<int, array<string, mixed>> $menus @return array<int, array<string, mixed>> */
+		public static function filter( array $menus ): array { return $menus; }
+		public static function get_url( string $slug ): string { return ''; }
+	}
+}
+
+if ( ! class_exists( WAMHelper::class ) ) {
+	final class WAMHelper {
+		public const FILTER = 'wikipress_admin_menus';
+		/** @return array<string, mixed> */
+		public static function define( string $name, string $slug, string $icon = 'dashicons-admin-generic', string $parent = '' ): array { return [ 'parent' => $parent, 'name' => $name, 'slug' => $slug, 'icon' => $icon ]; }
+		/** @param array<int, array<string, mixed>> $menus @return array<int, array<string, mixed>> */
+		public static function filter( array $menus ): array { return $menus; }
+	}
+}
 
 if ( ! class_exists( LoaderHelper::class ) ) {
-	class LoaderHelper extends \TrilBDev\WikiPress\Includes\Core\WP\WPLoader {
+	class LoaderHelper extends \WikiPress\Includes\Core\WP\WPLoader {
 		public function register_component( object|string|array $component, array $hooks ): self {
 			return $this;
 		}
@@ -219,7 +283,7 @@ if ( ! class_exists( LoaderHelper::class ) ) {
 
 }
 
-namespace TrilBDev\WikiPress\Includes\Settings {
+namespace WikiPress\Includes\Settings {
 
 if ( ! class_exists( Settings::class ) ) {
 	final class Settings {
