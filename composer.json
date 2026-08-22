@@ -15,7 +15,6 @@
     ],
     "require": {
         "php": ">=8.0.0",
-        "arts/elementor-stubs": "^4.2",
         "php-stubs/wordpress-stubs": "^6.9"
     },
     "autoload": {

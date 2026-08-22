@@ -11,11 +11,15 @@ Install the package as a development dependency:
 composer require --dev trilbdev/wikipress-dev-stub
 ```
 
+PHPStans projects only
+```sh
+composer require --dev szepeviktor/phpstan-wordpress
+```
+
 The package provides:
 
 - WikiPress interfaces, helpers, and settings contracts in `wikipress-stubs.php`.
 - WordPress declarations through `php-stubs/wordpress-stubs`.
-- Elementor and Elementor Pro declarations through `arts/elementor-stubs`.
 
 The WikiPress stubs are loaded by Composer's generated autoloader. They are
 development declarations only and must not be loaded by a production plugin
@@ -23,16 +27,26 @@ bootstrap.
 
 ## PHPStan
 
-Add the upstream stub files to the PHPStan bootstrap configuration when your
-project does not already load them:
+Install `szepeviktor/phpstan-wordpress` in the consuming project to enable
+WordPress-specific PHPStan rules. Then add its extension and the required
+declaration files to the project's `phpstan.neon`:
 
 ```neon
+includes:
+	- vendor/szepeviktor/phpstan-wordpress/extension.neon
+
 parameters:
 	bootstrapFiles:
 		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
-		- vendor/arts/elementor-stubs/elementor-stubs.php
 		- vendor/autoload.php
 ```
+
+No separate PHPStan bootstrap PHP file is required for this package. Composer
+loads `wikipress-stubs.php` through the package autoload configuration. The
+`includes` and `bootstrapFiles` entries belong in the consuming project's
+`phpstan.neon` (or equivalent configuration), not in this package. Projects
+using PHPStan's extension installer may not need to add the `includes` entry
+manually.
 
 ## Development
 
